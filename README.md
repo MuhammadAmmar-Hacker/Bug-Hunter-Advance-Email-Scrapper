@@ -19,8 +19,6 @@
 
 https://github.com/Ammar7543/Bug-Hunter-Advance-Email-Scrapper.git
 
-### Screenshot
-
 <p align="center">
   <img src="assets/dbfc2dd1-d8bf-4b5f-89a9-9a21b4e087b1.png" alt="Bug Hunter extension interface" width="500"/>
 </p>
@@ -97,5 +95,5 @@ Give a star if this project helped you.
 
 ## License
 
-Copyright © 2025 [Muhammad Ammar](https://github.com/Ammar7543).<br />
+Copyright © 2026 [Muhammad Ammar](https://github.com/Ammar7543).<br />
 This project is [AMXPRO](AMXPRO) licensed.
