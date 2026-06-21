@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="stylesheet" href="css/popup.css"/>
+<title>BountyHunter</title>
+</head>
+<body>
+<div id="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">BOUNTY<span class="brand-accent">HUNTER</span></span>
+    </div>
+    <div class="top-right">
+      <select id="themeSelect" class="theme-select">
+        <option value="green">🟢 Green</option>
+        <option value="red">🔴 Red</option>
+        <option value="bw">⚪ B&W</option>
+      </select>
+      <div id="netStatus" class="net-status online">
+        <span class="net-dot"></span><span id="netLabel">ONLINE</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="search">🔍 SEARCH</button>
+    <button class="tab-btn" data-tab="dorks">⌖ DORKS</button>
+    <button class="tab-btn" data-tab="blacklist">🚫 BLACKLIST</button>
+  </div>
+
+  <!-- SEARCH TAB -->
+  <div id="tab-search" class="tab-pane active">
+    <div class="mode-bar">
+      <select id="modeSelect" class="mode-select">
+        <option value="current">📄 Current Page</option>
+        <option value="google-multi" selected>🔍 Google Multi-Page</option>
+        <option value="alltabs">📑 All Open Tabs</option>
+      </select>
+      <div id="pageControls" class="page-controls" style="display:none">
+        <label class="page-label">Pg:</label>
+        <input id="maxPages" type="number" class="page-input" value="5" min="1" max="20"/>
+      </div>
+      <button id="btnExecute" class="neon-btn-sm">▶ START</button>
+    </div>
+
+    <div class="scan-mode-bar">
+      <span class="scan-mode-label">DEPTH:</span>
+      <button class="scan-mode-btn active" data-mode="domain">⚡ DOMAIN</button>
+      <button class="scan-mode-btn" data-mode="deep">🔬 DEEP</button>
+      <span id="scanModeHint" class="scan-mode-hint">Fast — main page only</span>
+    </div>
+
+    <div class="auto-bar">
+      <div class="auto-info">
+        <span class="auto-label">⚡ AUTO CRAWL</span>
+        <span class="auto-sub">Auto-hunt on every search &amp; site</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="autoToggle"/>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">EMAILS</div></div>
+      <div class="stat-card"><div class="stat-num" id="statDomains">0</div><div class="stat-lbl">DOMAINS</div></div>
+      <div class="stat-card"><div class="stat-num gold" id="statHV">0</div><div class="stat-lbl">HIGH VALUE</div></div>
+      <div class="stat-card"><div class="stat-num cyan" id="statPages">0</div><div class="stat-lbl">PAGES</div></div>
+      <div class="stat-card"><div class="stat-num" id="statQueue" style="color:var(--accent2,#f0a500)">0</div><div class="stat-lbl">IN QUEUE</div></div>
+    </div>
+
+    <div id="progressWrap" class="progress-wrap hidden">
+      <div class="progress-row">
+        <span id="progressText" class="progress-label">Scanning...</span>
+        <span id="progressETA" class="progress-eta"></span>
+      </div>
+      <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      <div class="progress-detail-grid">
+        <div class="pd-item"><span class="pd-lbl">DOMAIN</span><span id="pdDomain" class="pd-val">-</span></div>
+        <div class="pd-item"><span class="pd-lbl">DONE</span><span id="pdDone" class="pd-val">0</span></div>
+        <div class="pd-item"><span class="pd-lbl">LEFT</span><span id="pdLeft" class="pd-val">0</span></div>
+        <div class="pd-item"><span class="pd-lbl">FOUND</span><span id="pdFound" class="pd-val">0</span></div>
+        <div class="pd-item"><span class="pd-lbl">QUEUE</span><span id="pdQueue" class="pd-val" style="color:var(--accent2,#f0a500)">0</span></div>
+      </div>
+      <div class="progress-actions">
+        <button id="btnPause" class="ghost-btn-sm">⏸ PAUSE</button>
+        <button id="btnResume" class="ghost-btn-sm hidden">▶ RESUME</button>
+        <button id="btnStop" class="ghost-btn-sm red">⏹ STOP</button>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <input id="searchFilter" class="filter-input" placeholder="🔎 Filter emails..." type="text"/>
+      <button id="btnFilterHV" class="filter-chip" data-active="false">⭐ HV</button>
+      <button id="btnFilterPaid" class="filter-chip" data-active="false">💰 PAID</button>
+      <button id="btnSort" class="filter-chip">⇅ EMAIL</button>
+    </div>
+
+    <div id="emailList" class="email-list">
+      <div class="empty-state"><div class="empty-icon">◎</div><div class="empty-text">No emails yet.<br/>Select mode and press START.</div></div>
+    </div>
+
+    <div class="actions-bar">
+      <button id="btnCSV" class="action-btn primary" disabled>⬇ CSV</button>
+      <button id="btnCopyAll" class="action-btn secondary" disabled>⎘ COPY</button>
+      <button id="btnClear" class="action-btn danger" disabled>✕ CLEAR</button>
+    </div>
+    <div class="actions-bar" style="margin-top:4px">
+      <button id="btnResetVisited" class="action-btn secondary" style="width:100%;font-size:9px">🔄 RESET VISITED (re-crawl already seen sites)</button>
+    </div>
+  </div>
+
+  <!-- DORKS TAB -->
+  <div id="tab-dorks" class="tab-pane hidden">
+    <div class="dork-toolbar">
+      <select id="dorkCategoryFilter" class="mode-select" style="flex:1">
+        <option value="all">All Categories</option>
+      </select>
+      <button id="btnLaunchDorks" class="neon-btn-sm">⚡ LAUNCH ALL</button>
+    </div>
+    <div class="dork-add-row">
+      <select id="dorkCategorySelect" class="mode-select" style="flex:1;font-size:9px"></select>
+      <input id="dorkInput" class="filter-input" placeholder="Add custom dork..." style="flex:2"/>
+      <button id="btnAddDork" class="neon-btn-sm">ADD</button>
+    </div>
+    <div class="dork-toolbar" style="padding:4px 14px 6px;justify-content:flex-end">
+      <button id="btnClearDorks" class="ghost-btn-sm red">CLEAR CUSTOM</button>
+    </div>
+
+    <!-- SMART DORK BUILDER -->
+    <div class="smart-builder">
+      <div class="section-hdr"><span class="section-title">⚡ SMART DORK BUILDER</span><span class="section-sub">Pick only what you need</span></div>
+      <div class="smart-builder-grid">
+        <div class="smart-field">
+          <label class="smart-label">📅 YEAR</label>
+          <select id="sdYear" class="mode-select smart-select">
+            <option value="">Any</option>
+          </select>
+        </div>
+        <div class="smart-field">
+          <label class="smart-label">💱 CURRENCY</label>
+          <select id="sdCurrency" class="mode-select smart-select">
+            <option value="">Any</option>
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="¥">JPY (¥)</option>
+            <option value="₿">BTC (₿)</option>
+            <option value="AUD">AUD</option>
+            <option value="CAD">CAD</option>
+          </select>
+        </div>
+        <div class="smart-field">
+          <label class="smart-label">🌍 COUNTRY</label>
+          <select id="sdCountry" class="mode-select smart-select">
+            <option value="">Any</option>
+            <option value="us">United States (.com/.us)</option>
+            <option value="uk">United Kingdom (.uk)</option>
+            <option value="nl">Netherlands (.nl)</option>
+            <option value="de">Germany (.de)</option>
+            <option value="fr">France (.fr)</option>
+            <option value="in">India (.in)</option>
+            <option value="pk">Pakistan (.pk)</option>
+            <option value="au">Australia (.au)</option>
+            <option value="ca">Canada (.ca)</option>
+            <option value="ae">UAE (.ae)</option>
+            <option value="sa">Saudi Arabia (.sa)</option>
+            <option value="br">Brazil (.br)</option>
+            <option value="eu">Europe (.eu)</option>
+          </select>
+        </div>
+      </div>
+      <div class="smart-preview" id="smartPreview">// Select options above to build your custom dork...</div>
+      <div class="smart-actions">
+        <button id="btnSmartSearch" class="neon-btn-sm">🔎 SEARCH NOW</button>
+        <select id="smartTargetCat" class="mode-select" style="flex:1;font-size:9px"></select>
+        <button id="btnSmartSave" class="ghost-btn-sm">💾 SAVE TO CATEGORY</button>
+      </div>
+    </div>
+
+    <div id="dorkSections" class="dork-sections"></div>
+  </div>
+
+  <!-- BLACKLIST TAB -->
+  <div id="tab-blacklist" class="tab-pane hidden">
+    <div class="bl-section">
+      <div class="section-hdr"><span class="section-title">// PRESETS</span></div>
+      <div class="bl-toggle-row">
+        <span class="bl-toggle-lbl">🚫 Filter My Gmail</span>
+        <label class="toggle-switch"><input type="checkbox" id="blGmail" checked/><span class="toggle-slider"></span></label>
+      </div>
+      <div class="bl-toggle-row">
+        <span class="bl-toggle-lbl">🚫 Social Media Platforms</span>
+        <label class="toggle-switch"><input type="checkbox" id="blSocial"/><span class="toggle-slider"></span></label>
+      </div>
+      <div class="bl-toggle-row">
+        <span class="bl-toggle-lbl">🚫 Open Platforms (HackerOne, Bugcrowd, Intigriti...)</span>
+        <label class="toggle-switch"><input type="checkbox" id="blOpenPlatforms" checked/><span class="toggle-slider"></span></label>
+      </div>
+      <div class="bl-platform-hint">Blocks: bugcrowd.com · hackerone.com · intigriti.com · yeswehack.com · synack.com · cobalt.io</div>
+    </div>
+    <div class="bl-section">
+      <div class="section-hdr"><span class="section-title">// ADD CUSTOM</span></div>
+      <div class="dork-add-row">
+        <input id="blInput" class="filter-input" placeholder="domain.com or email@domain.com"/>
+        <button id="btnAddBL" class="neon-btn-sm">ADD</button>
+      </div>
+    </div>
+    <div class="bl-section">
+      <div class="section-hdr">
+        <span class="section-title">// BLACKLISTED</span>
+        <div style="display:flex;gap:6px">
+          <button id="btnExportBL" class="ghost-btn-sm">⬇ EXPORT</button>
+          <button id="btnClearBL" class="ghost-btn-sm red">CLEAR ALL</button>
+        </div>
+      </div>
+      <input id="blSearch" class="filter-input" placeholder="Search..." style="margin-bottom:8px"/>
+      <div id="blList" class="bl-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- APPROACH MODAL -->
+<div id="approachModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">⚡ APPROACH TARGET</span>
+      <button id="modalClose" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-lbl">TARGET:</div>
+      <div id="modalEmail" class="modal-email"></div>
+      <div class="modal-lbl mt8">MESSAGE:</div>
+      <textarea id="approachBody" class="neon-textarea" rows="9"></textarea>
+      <div class="tpl-row">
+        <button id="btnLoadTpl" class="ghost-btn-sm">📋 LOAD SAVED</button>
+        <button id="btnSaveTpl" class="ghost-btn-sm">💾 SAVE TEMPLATE</button>
+      </div>
+      <div class="modal-footer">
+        <button id="btnSendGmail" class="neon-btn">⚡ OPEN IN GMAIL</button>
+        <button id="btnCopyApproach" class="ghost-btn-sm" style="padding:9px 14px">⎘ COPY</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="notifBubble" class="notif-bubble hidden">
+  <span class="notif-icon">⬡</span>
+  <div><div class="notif-lbl">EMAILS FOUND</div><div id="notifCount" class="notif-count">+0</div></div>
+</div>
+
+<script src="js/popup.js"></script>
+</body>
+</html>
