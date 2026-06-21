@@ -76,20 +76,6 @@ git clone https://github.com/Ammar7543/Security_Heydeer.git
 
 ---
 
-## Set Permission
-
-```sh
-chmod +x Security_Heydeer.sh
-```
-
-## Run
-
-```sh
-./Security_Heydeer.sh
-```
-
----
-
 ## Author
 
 👤 **Muhammad Ammar**
