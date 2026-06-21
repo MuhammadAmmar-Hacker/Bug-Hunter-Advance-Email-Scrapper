@@ -58,7 +58,7 @@ git clone https://github.com/Ammar7543/Bug-Hunter-Advance-Email-Scrapper.git
 2. Open Chrome and navigate to `chrome://extensions/`.
 3. Enable **Developer mode** using the toggle in the top-right corner.
 4. Click **Load unpacked**.
-5. Select the cloned/downloaded `Security_Heydeer` folder.
+5. Select the cloned/downloaded `Bug-Hunter-Advance-Email-Scrapper` folder.
 6. The Bug Hunter icon will appear in your Chrome toolbar.
 
 ---
