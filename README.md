@@ -43,10 +43,8 @@ https://github.com/Ammar7543/Bug-Hunter-Advance-Email-Scrapper.git
 
 ##  Direct Download
 
+[https://github.com/Ammar7543/Bug-Hunter-Advance-Email-Scrapper/releases/download/New_Release_5.1.2/BountyHunter-v5.1.2.zip]
 
-```sh
-https://github.com/Ammar7543/Bug-Hunter-Advance-Email-Scrapper/releases/download/New_Release_5.1.2/BountyHunter-v5.1.2.zip
-```
 
 ### Option 1: Clone via Git
 
