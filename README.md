@@ -24,7 +24,7 @@ https://github.com/Ammar7543/Bug-Hunter-Advance-Email-Scrapper.git
 </p>
 
 ---
-## New Features Added
+## New Features Added V2
 
 - **Multi-Mode Scraping** — Scan the current page, auto-scrape across multiple Google search result pages, or scan all open tabs at once.
 - **Domain & Deep Scan Modes** — Choose a fast main-page-only scan, or a thorough crawl through contact, about, and security pages.
