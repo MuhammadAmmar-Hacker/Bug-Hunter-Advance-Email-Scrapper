@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>BountyHunter v2</title>
+<link rel="stylesheet" href="../css/popup.css"/>
+</head>
+<body>
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">BOUNTY<span class="accent">HUNTER</span></span>
+      <span class="ver">v2.0</span>
+    </div>
+    <div class="top-controls">
+      <button id="btnTheme" class="icon-btn" title="Customize Theme" style="font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:0">~/theme</button>
+      <button id="btnMaximize" class="icon-btn" title="Maximize Results Panel">⤢</button>
+      <div id="netDot" class="net-dot online" title="Online"></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="search">🔍 SEARCH</button>
+    <button class="tab-btn" data-tab="dorks">⌖ DORKS</button>
+    <button class="tab-btn" data-tab="blacklist">🚫 BLOCK</button>
+    <button class="tab-btn" data-tab="outreach">✉ OUTREACH</button>
+  </div>
+
+  <!-- ========= SEARCH TAB ========= -->
+  <div id="tab-search" class="tab-pane active">
+
+    <div class="mode-bar">
+      <select id="modeSelect" class="sel">
+        <option value="current">Current Page</option>
+        <option value="google-multi" selected>Google Multi-Page (AI)</option>
+        <option value="alltabs">All Open Tabs</option>
+      </select>
+      <div id="pageCtrl" class="page-ctrl">
+        <input id="maxPages" type="number" class="pg-input" value="5" min="1" max="50" title="Max pages"/>
+        <span class="pg-lbl">pg</span>
+      </div>
+      <button id="btnStart" class="neon-btn">▶ START</button>
+    </div>
+
+    <div class="depth-bar">
+      <span class="depth-lbl">DEPTH:</span>
+      <button class="depth-btn active" data-mode="domain">⚡ DOMAIN</button>
+      <button class="depth-btn" data-mode="deep">🔬 DEEP</button>
+      <label class="auto-wrap">
+        <input type="checkbox" id="autoToggle"/>
+        <span class="auto-lbl">AUTO</span>
+      </label>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat"><div id="sTotal" class="sval">0</div><div class="slbl">EMAILS</div></div>
+      <div class="stat"><div id="sDomains" class="sval">0</div><div class="slbl">DOMAINS</div></div>
+      <div class="stat"><div id="sHV" class="sval gold">0</div><div class="slbl">HIGH VALUE</div></div>
+      <div class="stat"><div id="sPaid" class="sval cyan">0</div><div class="slbl">PAID $</div></div>
+      <div class="stat"><div id="sQueue" class="sval amber">0</div><div class="slbl">QUEUE</div></div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div id="progressWrap" class="progress-wrap hidden">
+      <div class="prog-row">
+        <span id="progText" class="prog-text">Scanning...</span>
+        <span id="progETA" class="prog-eta"></span>
+        <div class="prog-btns">
+          <button id="btnPause" class="xs-btn">⏸</button>
+          <button id="btnResume" class="xs-btn hidden">▶</button>
+          <button id="btnStop" class="xs-btn red">⏹</button>
+        </div>
+      </div>
+      <div class="prog-track"><div id="progFill" class="prog-fill"></div></div>
+      <div class="prog-detail">
+        <span id="pdDomain" class="pd-chip">-</span>
+        <span id="pdDone" class="pd-chip">0 done</span>
+        <span id="pdLeft" class="pd-chip">0 left</span>
+        <span id="pdFound" class="pd-chip">0 found</span>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filter-bar">
+      <input id="filterInput" class="filter-inp" placeholder="🔎 Filter emails/domains..." type="text"/>
+      <button id="fHV" class="f-chip" data-active="false">⭐ HV</button>
+      <button id="fPaid" class="f-chip" data-active="false">💰 PAID</button>
+      <button id="fSort" class="f-chip">⇅ AZ</button>
+    </div>
+
+    <!-- EMAIL LIST — resizable -->
+    <div id="emailList" class="email-list">
+      <div class="empty-state">
+        <div class="ei-icon">◎</div>
+        <div>No emails yet. Select mode and press START.</div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="act-bar">
+      <button id="btnCSV" class="act-btn primary" disabled>⬇ CSV</button>
+      <button id="btnCopyAll" class="act-btn sec" disabled>⎘ COPY</button>
+      <button id="btnClear" class="act-btn danger" disabled>✕ CLEAR</button>
+      <button id="btnResetVisited" class="act-btn sec" title="Re-crawl already seen sites">🔄</button>
+    </div>
+
+  </div><!-- /search -->
+
+  <!-- ========= DORKS TAB ========= -->
+  <div id="tab-dorks" class="tab-pane hidden">
+
+    <!-- SMART DORK BUILDER -->
+    <div class="dork-builder">
+      <div class="db-title">⚡ SMART DORK BUILDER</div>
+      <div class="db-grid">
+        <div class="db-field">
+          <label class="db-lbl">SITE</label>
+          <input id="dbSite" class="db-inp" placeholder="example.com"/>
+        </div>
+        <div class="db-field">
+          <label class="db-lbl">INURL</label>
+          <input id="dbInurl" class="db-inp" placeholder="security"/>
+        </div>
+        <div class="db-field">
+          <label class="db-lbl">INTEXT</label>
+          <input id="dbIntext" class="db-inp" placeholder="bug bounty"/>
+        </div>
+        <div class="db-field">
+          <label class="db-lbl">FILETYPE</label>
+          <select id="dbFiletype" class="sel db-sel">
+            <option value="">Any</option>
+            <option value="pdf">PDF</option>
+            <option value="txt">TXT</option>
+            <option value="xml">XML</option>
+            <option value="json">JSON</option>
+          </select>
+        </div>
+        <div class="db-field">
+          <label class="db-lbl">EXCLUDE</label>
+          <input id="dbExclude" class="db-inp" placeholder="-hackerone -bugcrowd"/>
+        </div>
+        <div class="db-field">
+          <label class="db-lbl">YEAR</label>
+          <select id="dbYear" class="sel db-sel">
+            <option value="">Any</option>
+          </select>
+        </div>
+        <div class="db-field">
+          <label class="db-lbl">CURRENCY</label>
+          <select id="dbCurrency" class="sel db-sel">
+            <option value="">Any</option>
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="¥">JPY (¥)</option>
+            <option value="₿">BTC (₿)</option>
+          </select>
+        </div>
+        <div class="db-field">
+          <label class="db-lbl">COUNTRY</label>
+          <select id="dbCountry" class="sel db-sel">
+            <option value="">Any</option>
+            <option value="site:*.us OR site:*.com">USA</option>
+            <option value="site:*.uk">UK</option>
+            <option value="site:*.nl">Netherlands</option>
+            <option value="site:*.de">Germany</option>
+            <option value="site:*.in">India</option>
+            <option value="site:*.pk">Pakistan</option>
+            <option value="site:*.ae">UAE</option>
+            <option value="site:*.au">Australia</option>
+            <option value="site:*.ca">Canada</option>
+            <option value="site:*.fr">France</option>
+            <option value="site:*.eu">Europe</option>
+            <option value="site:*.sa">Saudi Arabia</option>
+          </select>
+        </div>
+        <div class="db-field">
+          <label class="db-lbl">OR TERMS</label>
+          <input id="dbOr" class="db-inp" placeholder="reward | bounty"/>
+        </div>
+      </div>
+      <div id="dbPreview" class="db-preview">// Build your dork above...</div>
+      <div class="db-actions">
+        <button id="btnDbSearch" class="neon-btn">🔎 SEARCH NOW</button>
+        <select id="dbSaveCat" class="sel" style="flex:1;font-size:9px"></select>
+        <button id="btnDbSave" class="xs-btn">💾 SAVE</button>
+      </div>
+    </div>
+
+    <!-- CATEGORY MANAGER -->
+    <div class="dork-cat-mgr">
+      <div class="dcm-row">
+        <select id="dorkCatFilter" class="sel" style="flex:1">
+          <option value="all">All Categories</option>
+        </select>
+        <input id="newCatInput" class="db-inp" placeholder="New category name..." style="flex:1"/>
+        <button id="btnAddCat" class="xs-btn">+ CAT</button>
+        <button id="btnLaunchAll" class="neon-btn">⚡ LAUNCH</button>
+      </div>
+    </div>
+
+    <!-- CUSTOM DORK ADD -->
+    <div class="dork-add-row">
+      <select id="dorkCatSelect" class="sel" style="flex:1;font-size:9px"></select>
+      <input id="dorkInput" class="db-inp" placeholder="Add custom dork..." style="flex:2"/>
+      <button id="btnAddDork" class="xs-btn">ADD</button>
+    </div>
+    <div style="padding:4px 14px;text-align:right">
+      <button id="btnClearCustom" class="xs-btn red">CLEAR CUSTOM</button>
+    </div>
+
+    <div id="dorkSections" class="dork-sections"></div>
+  </div><!-- /dorks -->
+
+  <!-- ========= BLACKLIST TAB ========= -->
+  <div id="tab-blacklist" class="tab-pane hidden">
+    <div class="bl-section">
+      <div class="sec-hdr"><span class="sec-title">// PRESETS</span></div>
+      <div class="bl-toggle"><span class="bl-lbl">My Gmail / Personal Emails</span>
+        <label class="tgl"><input type="checkbox" id="blMyEmail" checked/><span class="tgl-s"></span></label>
+      </div>
+      <div id="personalEmailsList" class="personal-emails-list"></div>
+      <div class="personal-email-add">
+        <input id="personalEmailInput" class="db-inp" placeholder="Add your email to block..."/>
+        <button id="btnAddPersonalEmail" class="xs-btn">+ ADD</button>
+      </div>
+
+      <div class="bl-toggle"><span class="bl-lbl">Social Media (all major platforms)</span>
+        <label class="tgl"><input type="checkbox" id="blSocial"/><span class="tgl-s"></span></label>
+      </div>
+      <div class="bl-social-hint">Facebook · Instagram · LinkedIn · Medium · X/Twitter · VK · TikTok · YouTube · Pinterest · Snapchat · Reddit · Tumblr</div>
+      <div class="personal-email-add" style="margin-top:6px">
+        <input id="socialCustomInput" class="db-inp" placeholder="Add to social list..."/>
+        <button id="btnAddSocialCustom" class="xs-btn">+ ADD</button>
+      </div>
+
+      <div class="bl-toggle"><span class="bl-lbl">Open Platforms (HackerOne, Bugcrowd...)</span>
+        <label class="tgl"><input type="checkbox" id="blPlatforms" checked/><span class="tgl-s"></span></label>
+      </div>
+      <div class="bl-platform-hint">hackerone.com · bugcrowd.com · intigriti.com · yeswehack.com · synack.com · cobalt.io · openbugbounty.org</div>
+      <div class="personal-email-add" style="margin-top:6px">
+        <input id="platformCustomInput" class="db-inp" placeholder="Add to platforms list..."/>
+        <button id="btnAddPlatformCustom" class="xs-btn">+ ADD</button>
+      </div>
+    </div>
+
+    <div class="bl-section">
+      <div class="sec-hdr"><span class="sec-title">// CUSTOM BLACKLIST</span></div>
+      <div class="personal-email-add">
+        <input id="blCustomInput" class="db-inp" placeholder="domain.com or email@domain.com"/>
+        <button id="btnAddCustomBL" class="xs-btn">ADD</button>
+      </div>
+      <div class="sec-hdr" style="margin-top:10px">
+        <span class="sec-title">// LIST</span>
+        <div style="display:flex;gap:6px">
+          <button id="btnExportBL" class="xs-btn">⬇ EXPORT</button>
+          <button id="btnClearBL" class="xs-btn red">CLEAR</button>
+        </div>
+      </div>
+      <input id="blSearch" class="filter-inp" placeholder="Search blacklist..." style="margin:6px 0"/>
+      <div id="blList" class="bl-list"></div>
+    </div>
+  </div><!-- /blacklist -->
+
+  <!-- ========= OUTREACH TAB ========= -->
+  <div id="tab-outreach" class="tab-pane hidden">
+    <div class="or-section">
+      <div class="sec-hdr"><span class="sec-title">// BULK EMAIL SENDER</span></div>
+      <div class="or-hint">Paste emails (one per line or comma-separated). Emails open in Gmail one by one with delay.</div>
+      <textarea id="bulkEmailTarget" class="neon-ta" rows="4" placeholder="target1@domain.com&#10;target2@domain.com&#10;..."></textarea>
+      <div class="or-options">
+        <label class="db-lbl">DELAY (seconds between sends)</label>
+        <input id="sendDelay" type="number" class="pg-input" value="30" min="5" max="300"/>
+      </div>
+    </div>
+    <div class="or-section">
+      <div class="sec-hdr"><span class="sec-title">// EMAIL TEMPLATE</span></div>
+      <input id="tplSubject" class="db-inp" placeholder="Subject line..." style="margin-bottom:8px"/>
+      <textarea id="tplBody" class="neon-ta" rows="8" placeholder="Your message body..."></textarea>
+      <div class="tpl-actions">
+        <button id="btnLoadTpl" class="xs-btn">📋 LOAD</button>
+        <button id="btnSaveTpl" class="xs-btn">💾 SAVE</button>
+        <button id="btnStartBulk" class="neon-btn" style="flex:1">⚡ START BULK SEND</button>
+      </div>
+      <div id="bulkStatus" class="bulk-status hidden"></div>
+    </div>
+  </div><!-- /outreach -->
+
+</div><!-- /app -->
+
+<!-- THEME MODAL -->
+<div id="themeModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <span class="modal-title">🎨 CUSTOM THEME</span>
+      <button id="themeModalClose" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="theme-presets">
+        <button class="preset-btn" data-preset="green">Green Neon</button>
+        <button class="preset-btn" data-preset="red">Red Neon</button>
+        <button class="preset-btn" data-preset="bw">Black & White</button>
+        <button class="preset-btn" data-preset="blue">Cyber Blue</button>
+        <button class="preset-btn" data-preset="purple">Purple</button>
+      </div>
+      <div class="color-pickers">
+        <div class="cp-row"><label>Primary</label><input type="color" id="cpPrimary" value="#00ff41"/></div>
+        <div class="cp-row"><label>Accent</label><input type="color" id="cpAccent" value="#00ffe7"/></div>
+        <div class="cp-row"><label>Background</label><input type="color" id="cpBg" value="#020c06"/></div>
+        <div class="cp-row"><label>Card BG</label><input type="color" id="cpCard" value="#071a0c"/></div>
+        <div class="cp-row"><label>Text</label><input type="color" id="cpText" value="#b8ffcb"/></div>
+      </div>
+      <button id="btnApplyTheme" class="neon-btn" style="width:100%;margin-top:12px">APPLY THEME</button>
+    </div>
+  </div>
+</div>
+
+<!-- APPROACH MODAL -->
+<div id="approachModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <span class="modal-title">⚡ APPROACH TARGET</span>
+      <button id="approachClose" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="m-lbl">TARGET:</div>
+      <div id="approachEmail" class="m-email"></div>
+      <div class="m-lbl mt8">SUBJECT:</div>
+      <input id="approachSubject" class="db-inp" placeholder="Subject..."/>
+      <div class="m-lbl mt8">MESSAGE:</div>
+      <textarea id="approachBody" class="neon-ta" rows="8"></textarea>
+      <div class="tpl-actions">
+        <button id="btnApproachLoad" class="xs-btn">📋 LOAD</button>
+        <button id="btnApproachSave" class="xs-btn">💾 SAVE</button>
+        <button id="btnApproachSend" class="neon-btn" style="flex:1">⚡ OPEN IN GMAIL</button>
+        <button id="btnApproachCopy" class="xs-btn">⎘ COPY</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="notifBubble" class="notif-bubble hidden">
+  <span>⬡</span>
+  <div><div class="nb-lbl">EMAILS FOUND</div><div id="nbCount" class="nb-count">+0</div></div>
+</div>
+
+<script src="../js/popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "BountyHunter — Email Recon Pro",
+  "version": "2.0.0",
+  "description": "Elite Bug Bounty Email Hunter v2 — AI Multi-Page, Bulk Outreach, Smart Blacklist, Custom Themes",
+  "permissions": ["activeTab","scripting","storage","tabs","notifications","alarms"],
+  "host_permissions": ["https://*/*","http://*/*"],
+  "background": {"service_worker": "js/background.js"},
+  "action": {
+    "default_popup": "pages/popup.html",
+    "default_icon": {"32":"icons/icon-32.png","48":"icons/icon-48.png","128":"icons/icon-128.png"}
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/search*","https://www.google.ae/search*",
+        "https://www.google.co.uk/search*","https://www.google.com.au/search*",
+        "https://www.google.ca/search*","https://www.google.co.in/search*",
+        "https://www.google.de/search*","https://www.google.fr/search*",
+        "https://www.google.com.pk/search*","https://www.google.com.sa/search*",
+        "https://www.google.nl/search*","https://www.google.com.br/search*",
+        "https://www.google.co.jp/search*","https://www.google.it/search*",
+        "https://www.google.es/search*","https://www.google.ru/search*",
+        "https://www.google.com.mx/search*","https://www.google.pl/search*",
+        "https://www.google.com.tr/search*","https://www.google.co.za/search*"
+      ],
+      "js": ["js/content-serp.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["js/content-page.js"],
+      "run_at": "document_idle",
+      "exclude_matches": [
+        "https://www.google.com/search*","https://www.google.ae/search*",
+        "https://www.google.co.uk/search*","https://www.google.com.au/search*",
+        "https://www.google.ca/search*","https://www.google.co.in/search*",
+        "https://www.google.de/search*","https://www.google.fr/search*",
+        "https://www.google.com.pk/search*","https://www.google.com.sa/search*",
+        "https://www.google.nl/search*","https://www.google.com.br/search*",
+        "https://www.google.co.jp/search*","https://www.google.it/search*",
+        "https://www.google.es/search*","https://www.google.ru/search*",
+        "https://www.google.com.mx/search*","https://www.google.pl/search*",
+        "https://www.google.com.tr/search*","https://www.google.co.za/search*"
+      ]
+    }
+  ],
+  "icons": {"32":"icons/icon-32.png","48":"icons/icon-48.png","128":"icons/icon-128.png"}
+}
