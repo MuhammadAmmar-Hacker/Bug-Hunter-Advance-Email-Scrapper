@@ -24,6 +24,30 @@ https://github.com/Ammar7543/Bug-Hunter-Advance-Email-Scrapper.git
 </p>
 
 ---
+## New Features Added
+
+- **Multi-Mode Scraping** — Scan the current page, auto-scrape across multiple Google search result pages, or scan all open tabs at once.
+- **Domain & Deep Scan Modes** — Choose a fast main-page-only scan, or a thorough crawl through contact, about, and security pages.
+- **Auto Background Crawl** — Passively collects emails while you browse, with no manual action required.
+- **Smart Categorization** — Automatically flags high-value bug bounty emails and detects paid/reward programs with a dedicated badge and counter.
+- **Paid Program Detection** — Detects currency signals such as dollar, euro, and rupee symbols on scraped pages and marks matching emails as paid opportunities.
+- **Categorized Google Dorks** — Pre-built dork categories covering FinTech, SaaS, Healthcare, Fresh VDPs, Paid Programs, and more.
+- **Smart Dork Builder** — Build fully custom dorks using nine configurable fields including Site, Inurl, Intext, Filetype, Exclude, OR terms, Year, Currency, and Country, with a live preview before launching.
+- **Custom Dork Categories** — Create and name your own dork categories alongside the built-in ones.
+- **Inline SERP Block Buttons** — A Block button appears next to every Google search result, letting you blacklist any domain without leaving the search page.
+- **Smart Blacklist** — Automatically filters your own Gmail, social media platforms, and open bounty platforms such as HackerOne, Bugcrowd, and Intigriti. Any domain or email can be blocked with one click from the results list.
+- **Multiple Personal Email Blocking** — Add multiple personal email addresses to the block list. Gmail dot and plus alias variants are automatically normalized and filtered.
+- **Expandable Social and Platform Lists** — Manually add custom domains to the Social Media and Open Platforms blacklist presets.
+- **Bulk Email Outreach** — Paste multiple target emails and send a templated message to each one through Gmail, with a configurable delay between sends to avoid bulk flagging.
+- **Approach Templates** — Save and reuse custom outreach email templates with a dedicated subject and body, sent directly through Gmail compose.
+- **Vertical Maximize** — Expand the results panel vertically for easier reading of large email lists.
+- **Live Progress Tracking** — Real-time statistics including emails found, domains scanned, queue size, and estimated time remaining, with pause, resume, and stop controls.
+- **Custom Color Theme Editor** — Choose from five presets including Green Neon, Red Neon, Black and White, Cyber Blue, and Purple, or define your own colors using a full palette picker for primary, accent, background, card, and text values.
+- **Reset Visited** — Clear the visited URL cache so previously scanned domains can be re-crawled in a new session.
+- **CAPTCHA Detection** — Automatically detects Google CAPTCHA pages during multi-page scraping and waits for the user to solve before resuming.
+- **Global Email Deduplication** — Each unique email address is stored only once regardless of how many pages or sessions it was found on, and CSV exports are deduplicated as well.
+---
+---
 
 ## Features
 
