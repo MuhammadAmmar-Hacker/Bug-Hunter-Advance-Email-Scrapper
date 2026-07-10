@@ -1,7 +1,7 @@
-<h1 align="center">Bounty Hunter - Advance Email Scrapper</h1>
+<h1 align="center">Bounty Hunter V2 - Advance Email Scrapper</h1>
 
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-2.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/Ammar7543/Security_Heydeer.git" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
